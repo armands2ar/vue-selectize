@@ -16,7 +16,7 @@
 
     VueSelectize.settings = {}
 
-    VueSelectize.install = function(Vue, settings) {
+    VueSelectize.install = function (Vue, settings) {
 
         Vue.directive('selectize', {
             twoWay: true,
@@ -25,6 +25,14 @@
             params: [
                 'options', 'settings'
             ],
+
+            paramWatchers: {
+                options: function (val, oldVal) {
+                    var se = $(this.el).data('selectize')
+                    se.clearOptions()
+                    se.addOption(val)
+                }
+            },
 
             bind: function () {
                 var self = this
@@ -65,7 +73,7 @@
 
     }
 
-    function mergeData(to, from) {
+    function mergeData (to, from) {
         var key, toVal, fromVal;
         for (key in from) {
             toVal = to[key];
@@ -82,7 +90,9 @@
     if (typeof exports == "object") {
         module.exports = VueSelectize
     } else if (typeof define == "function" && define.amd) {
-        define([], function(){ return VueSelectize })
+        define([], function () {
+            return VueSelectize
+        })
     } else if (window.Vue) {
         window.VueSelectize = VueSelectize
         Vue.use(VueSelectize)
